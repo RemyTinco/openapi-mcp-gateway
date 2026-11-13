@@ -1,0 +1,10 @@
+name: orders
+schema: ./openapi.yaml
+base_url: https://orders.example.com
+auth:
+  type: api_key
+  location: header
+  name: Authorization
+  value_env: DRF_AUTHORIZATION   # holds the whole header value, e.g. "Token <your DRF token>"
+exposure:
+  mode: read_only

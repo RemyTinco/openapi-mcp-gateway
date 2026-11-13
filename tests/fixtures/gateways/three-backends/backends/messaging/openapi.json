@@ -1,0 +1,12 @@
+{
+  "openapi": "3.1.0",
+  "info": {"title": "Messaging", "version": "1.0.0"},
+  "paths": {
+    "/messages": {
+      "get": {
+        "operationId": "messages_list",
+        "responses": {"200": {"description": "OK"}}
+      }
+    }
+  }
+}

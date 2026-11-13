@@ -1,0 +1,68 @@
+openapi: 3.0.3
+info:
+  title: Inventory API
+  version: 1.0.0
+  description: A small example API written for this repository. It does not exist online.
+paths:
+  /stock:
+    get:
+      operationId: stock_list
+      summary: List stock levels
+      responses:
+        "200":
+          description: Stock levels.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StockLevel"
+  /stock/{sku}:
+    get:
+      operationId: stock_retrieve
+      summary: Stock level of one SKU
+      parameters:
+        - name: sku
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The stock level.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StockLevel"
+    put:
+      operationId: stock_update
+      summary: Set the stock level of one SKU
+      parameters:
+        - name: sku
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StockLevel"
+      responses:
+        "200":
+          description: The updated stock level.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StockLevel"
+components:
+  schemas:
+    StockLevel:
+      type: object
+      required: [sku, on_hand]
+      properties:
+        sku:
+          type: string
+        on_hand:
+          type: integer

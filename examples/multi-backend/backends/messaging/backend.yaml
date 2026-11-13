@@ -1,0 +1,15 @@
+name: messaging
+schema: ./openapi.json
+base_url: https://messaging.example.com
+auth:
+  type: api_key
+  location: header
+  name: X-API-Key
+  value_env: MESSAGING_API_KEY
+exposure:
+  mode: allowlist          # only the operations named here become tools
+  operations:
+    - messages_list
+    - messages_retrieve
+http:
+  timeout_seconds: 10      # overrides the gateway-wide default for this backend only

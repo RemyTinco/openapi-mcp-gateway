@@ -1,0 +1,13 @@
+openapi: 3.0.3
+info:
+  title: Integer status keys
+  version: 1.0.0
+paths:
+  /pets:
+    get:
+      operationId: listPets
+      responses:
+        200:
+          description: A list of pets
+        404:
+          description: Not found

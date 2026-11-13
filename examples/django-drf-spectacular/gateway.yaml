@@ -1,0 +1,7 @@
+version: 1
+
+server:
+  name: Orders Gateway
+
+backends:
+  directory: ./backends

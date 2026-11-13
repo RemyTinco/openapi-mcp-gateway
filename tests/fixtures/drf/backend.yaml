@@ -1,0 +1,10 @@
+name: drf
+schema: ./openapi-3.0.yaml
+base_url: https://orders.example.com
+auth:
+  type: api_key
+  location: header
+  name: Authorization
+  value_env: DRF_AUTHORIZATION
+exposure:
+  mode: read_only

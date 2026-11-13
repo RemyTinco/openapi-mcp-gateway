@@ -1,0 +1,8 @@
+name: inventory
+schema: ./openapi.yaml
+base_url: https://inventory.example.com
+auth:
+  type: bearer
+  token_env: INVENTORY_API_TOKEN
+exposure:
+  mode: all                # explicit opt-in: PUT /stock/{sku} becomes a tool too

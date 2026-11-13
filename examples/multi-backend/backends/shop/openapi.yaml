@@ -1,0 +1,142 @@
+openapi: 3.0.3
+info:
+  title: Shop API
+  version: 1.0.0
+  description: A small example API written for this repository. It does not exist online.
+paths:
+  /products:
+    get:
+      operationId: products_list
+      summary: List products
+      description: Returns a page of products, optionally filtered by category.
+      parameters:
+        - name: category
+          in: query
+          required: false
+          description: Only products in this category.
+          schema:
+            type: string
+            enum: [books, games, music]
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+      responses:
+        "200":
+          description: A page of products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+    post:
+      operationId: products_create
+      summary: Create a product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewProduct"
+      responses:
+        "201":
+          description: The created product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+  /products/{productId}:
+    get:
+      operationId: products_retrieve
+      summary: Retrieve one product
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: The product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: No such product.
+    delete:
+      operationId: products_destroy
+      summary: Delete a product
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted.
+  /orders:
+    get:
+      operationId: orders_list
+      summary: List orders
+      responses:
+        "200":
+          description: All orders visible to the caller.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+  /internal/metrics:
+    get:
+      operationId: internal_metrics
+      summary: Internal metrics (not meant for agents)
+      responses:
+        "200":
+          description: Metrics.
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    Product:
+      type: object
+      required: [id, name, price_cents]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          type: string
+          enum: [books, games, music]
+        price_cents:
+          type: integer
+    NewProduct:
+      type: object
+      required: [name, price_cents]
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+          enum: [books, games, music]
+        price_cents:
+          type: integer
+    Order:
+      type: object
+      required: [id, product_id, quantity]
+      properties:
+        id:
+          type: integer
+        product_id:
+          type: integer
+        quantity:
+          type: integer

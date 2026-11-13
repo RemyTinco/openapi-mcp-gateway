@@ -1,0 +1,11 @@
+name: shop
+schema: ./openapi.yaml
+base_url: https://shop.example.com   # replace with your API's real origin
+auth:
+  type: bearer
+  token_env: SHOP_API_TOKEN          # the NAME of an environment variable, never the token itself
+exposure:
+  mode: read_only                    # GET and HEAD only
+  exclude:
+    paths:
+      - /internal/*                  # hide everything under /internal

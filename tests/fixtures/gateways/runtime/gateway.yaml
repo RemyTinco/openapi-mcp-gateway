@@ -1,0 +1,5 @@
+version: 1
+server:
+  name: Runtime Test Gateway
+backends:
+  directory: ./backends

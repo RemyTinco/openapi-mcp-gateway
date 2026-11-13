@@ -1,0 +1,95 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Messaging API",
+    "version": "1.0.0",
+    "description": "A small example API written for this repository. It does not exist online."
+  },
+  "paths": {
+    "/messages": {
+      "get": {
+        "operationId": "messages_list",
+        "summary": "List messages",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "enum": ["pending", "sent", "failed"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Messages.",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Message" } }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "messages_create",
+        "summary": "Create a message",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/NewMessage" } }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The created message.",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Message" } }
+            }
+          }
+        }
+      }
+    },
+    "/messages/{messageId}": {
+      "get": {
+        "operationId": "messages_retrieve",
+        "summary": "Retrieve one message",
+        "parameters": [
+          { "name": "messageId", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "The message.",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Message" } }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "messages_destroy",
+        "summary": "Delete a message",
+        "parameters": [
+          { "name": "messageId", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": { "204": { "description": "Deleted." } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Message": {
+        "type": "object",
+        "required": ["id", "size_bytes", "status"],
+        "properties": {
+          "id": { "type": "integer" },
+          "size_bytes": { "type": "integer" },
+          "status": { "type": "string", "enum": ["pending", "sent", "failed"] }
+        }
+      },
+      "NewMessage": {
+        "type": "object",
+        "required": ["size_bytes"],
+        "properties": { "size_bytes": { "type": "integer" } }
+      }
+    }
+  }
+}

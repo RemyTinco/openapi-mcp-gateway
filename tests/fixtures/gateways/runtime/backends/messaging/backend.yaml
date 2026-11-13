@@ -1,0 +1,10 @@
+name: messaging
+schema: ./openapi.yaml
+base_url: https://messaging.example.com
+auth:
+  type: api_key
+  location: header
+  name: X-API-Key
+  value_env: MESSAGING_API_KEY
+exposure:
+  mode: all

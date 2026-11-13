@@ -1,0 +1,11 @@
+name: catalog
+schema: ./openapi.yaml
+base_url: https://catalog.example.com
+auth:
+  type: bearer
+  token_env: CATALOG_API_TOKEN
+exposure:
+  mode: read_only
+  exclude:
+    operations:
+      - items_export

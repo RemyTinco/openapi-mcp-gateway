@@ -1,0 +1,12 @@
+version: 1
+
+server:
+  name: Shop Gateway
+  transport: stdio
+
+backends:
+  directory: ./backends
+
+logging:
+  level: INFO
+  format: text

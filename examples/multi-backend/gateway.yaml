@@ -1,0 +1,20 @@
+version: 1
+
+server:
+  name: Company Gateway
+  transport: stdio
+
+backends:
+  directory: ./backends
+  discovery: auto
+
+defaults:
+  exposure:
+    mode: read_only        # the default; `all` is only accepted inside a backend.yaml
+  http:
+    timeout_seconds: 30
+    follow_redirects: false
+
+logging:
+  level: INFO
+  format: text

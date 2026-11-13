@@ -1,0 +1,8 @@
+name: messaging
+schema: ./openapi.json
+base_url: https://messaging.example.com
+auth:
+  type: api_key
+  location: header
+  name: X-Api-Key
+  value_env: MESSAGING_API_KEY

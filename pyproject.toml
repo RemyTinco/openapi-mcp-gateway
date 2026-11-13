@@ -1,0 +1,99 @@
+[project]
+name = "openapi-mcp-gateway"
+version = "0.1.0"
+description = "CLI that turns local OpenAPI files into MCP tools"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Remy Tinco", email = "tinco.remy@gmail.com" }]
+keywords = ["mcp", "openapi", "fastmcp", "ai-agents", "claude-code"]
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Environment :: Console",
+]
+requires-python = ">=3.14"
+dependencies = [
+    "fastmcp>=4.1.7,<5",
+    "httpx2>=2.16,<3",
+    "pydantic>=2.14,<3",
+    "pyyaml>=6.0.1,<7",
+    "openapi-spec-validator>=0.9,<0.10",
+    "typer>=0.26,<1",
+]
+
+[project.urls]
+Homepage = "https://github.com/RemyTinco/openapi-mcp-gateway"
+Issues = "https://github.com/RemyTinco/openapi-mcp-gateway/issues"
+
+[project.scripts]
+openapi-mcp-gateway = "openapi_mcp_gateway.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "ruff==0.17.4",
+    "mypy",
+    "types-PyYAML",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/openapi_mcp_gateway"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "--import-mode=importlib -m \"not perf\""
+markers = ["perf: startup benchmark (NFR-001); run with -m perf"]
+testpaths = ["tests"]
+pythonpath = ["tests/integration"]  # for the stub_backend helper module
+
+[tool.mypy]
+strict = true
+mypy_path = "src"
+
+[tool.ruff]
+target-version = "py314"
+line-length = 100
+extend-exclude = ["tests/fixtures/drf/project"]
+
+[tool.ruff.lint]
+# Every rule is on; Ruff is pinned exactly in the dev group because an upgrade can add rules.
+select = ["ALL"]
+ignore = [
+    "COM812",  # trailing commas are the formatter's job; the rule conflicts with it
+    "D203",    # conflicts with D211 (no blank line before a class docstring)
+    "D213",    # conflicts with D212 (summary on the first docstring line)
+    "CPY001",  # no per-file copyright notice; LICENSE covers the repository
+    "ANN401",  # parsed OpenAPI documents and tool arguments really are Any
+    "TRY003",  # messages are written for the operator at the raise site
+    "D105",    # magic methods do what their name says
+    "D107",    # the class docstring documents construction
+]
+
+[tool.ruff.lint.per-file-ignores]
+# GatewayTransport._error takes an error code first, not a message.
+"src/openapi_mcp_gateway/http/client.py" = ["EM101"]
+"tests/**" = [
+    "S101",     # pytest assertions
+    "D1",       # test names say what the docstring would
+    "PLR2004",  # literal expected values
+    "S105",     # fake credentials
+    "S106",
+    "SLF001",   # tests reach into private state on purpose
+    "INP001",   # test directories are not packages (--import-mode=importlib)
+    "ARG",      # handler and stub signatures are fixed by what calls them
+    "FBT001",   # parametrized booleans
+    "S603",     # tests start the gateway's own CLI
+    "PLC0415",  # imports placed next to the monkeypatch they belong to
+]
+
+[tool.ruff.lint.flake8-type-checking]
+# Pydantic reads field annotations at runtime; their imports must stay real imports.
+runtime-evaluated-base-classes = ["pydantic.BaseModel"]

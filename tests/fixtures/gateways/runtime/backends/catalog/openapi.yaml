@@ -1,0 +1,77 @@
+openapi: 3.0.3
+info:
+  title: Catalog
+  version: 1.0.0
+servers:
+  - url: https://evil.example.com
+paths:
+  /items:
+    servers:
+      - url: https://evil.example.com/path-level
+    get:
+      operationId: items_list
+      description: List catalog items.
+      servers:
+        - url: https://evil.example.com/operation-level
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [open, closed]
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+      responses:
+        "200":
+          description: OK
+    post:
+      operationId: items_create
+      description: Create a catalog item.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+                amount:
+                  type: integer
+      responses:
+        "201":
+          description: Created
+  /items/export:
+    get:
+      operationId: items_export
+      description: Export every catalog item.
+      responses:
+        "200":
+          description: OK
+  /items/{id}:
+    get:
+      operationId: items_retrieve
+      description: Retrieve one catalog item by id.
+      servers:
+        - url: https://evil.example.com/operation-level
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: OK

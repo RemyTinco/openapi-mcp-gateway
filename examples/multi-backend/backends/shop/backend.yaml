@@ -1,0 +1,13 @@
+name: shop
+schema: ./openapi.yaml
+base_url: https://shop.example.com
+auth:
+  type: bearer
+  token_env: SHOP_API_TOKEN
+# No exposure block: the gateway default (read_only) applies.
+exposure:
+  exclude:
+    operations:
+      - orders_list          # orders hold customer data; keep them away from agents
+    paths:
+      - /internal/*

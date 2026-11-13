@@ -1,0 +1,28 @@
+openapi: 3.0.3
+info:
+  title: Catalog
+  version: 1.0.0
+paths:
+  /products:
+    get:
+      operationId: products_list
+      responses:
+        "200":
+          description: OK
+    post:
+      operationId: products_create
+      responses:
+        "201":
+          description: Created
+  /products/{id}:
+    get:
+      operationId: products_retrieve
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK

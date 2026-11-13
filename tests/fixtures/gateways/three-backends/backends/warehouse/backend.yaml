@@ -1,0 +1,3 @@
+name: warehouse
+schema: ./openapi.yaml
+base_url: https://warehouse.example.com
